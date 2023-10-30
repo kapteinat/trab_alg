@@ -32,3 +32,13 @@ def merge(left, right):
     result.extend(left[i:])
     result.extend(right[j:])
     return result
+
+
+def quick_sort(arr, compare_func=lambda x, y: x.chave <= y.chave):
+    if len(arr) <= 1:
+        return arr
+    else:
+        pivot = arr[0]
+        lesser = [x for x in arr[1:] if compare_func(x, pivot)]
+        greater = [x for x in arr[1:] if not compare_func(x, pivot)]
+        return quick_sort(lesser, compare_func) + [pivot] + quick_sort(greater, compare_func)
