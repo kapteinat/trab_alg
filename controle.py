@@ -1,51 +1,38 @@
-from view import *
-from modelo import *
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+
+    left = merge_sort(left)
+    right = merge_sort(right)
+
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+
+    while i < len(left) and j < len(right):
+        if left[i].chave < right[j].chave:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
 
 
-class Controller:
-    def __init__(self, root):
-        self.view = View(root, self.on_button_click, self.on_button_click1)
-
-    def on_button_click(self):
-        elementos = []
-        input_text = self.view.entry.get("1.0", tk.END)
-        lines = input_text.split('\n')
-
-        for line in lines:
-            parts = line.strip().split(',')
-            if len(parts) == 2:
-                nome, chave = parts
-                try:
-                    chave = int(chave)
-                    elemento = Elemento(nome, chave)
-                    elementos.append(elemento)
-                except ValueError:
-                    messagebox.showerror("Erro", "A chave deve ser um número inteiro.")
-
-        if elementos:
-            sorted_elementos = merge_sort(elementos)
-            output_text = "\n".join([f"Nome: {elemento.nome}, Chave: {elemento.chave}" for elemento in sorted_elementos])
-            self.view.output.delete("1.0", tk.END)
-            self.view.output.insert(tk.END, output_text)
-
-    def on_button_click1(self):
-        elementos = []
-        input_text = self.view.entry.get("1.0", tk.END)
-        lines = input_text.split('\n')
-
-        for line in lines:
-            parts = line.strip().split(',')
-            if len(parts) == 2:
-                nome, chave = parts
-                try:
-                    chave = int(chave)
-                    elemento = Elemento(nome, chave)
-                    elementos.append(elemento)
-                except ValueError:
-                    messagebox.showerror("Erro", "A chave deve ser um número inteiro.")
-
-        if elementos:
-            sorted_elementos = quick_sort(elementos, compare_func=lambda x, y: x.chave <= y.chave)
-            output_text = "\n".join([f"Nome: {elemento.nome}, Chave: {elemento.chave}" for elemento in sorted_elementos])
-            self.view.output.delete("1.0", tk.END)
-            self.view.output.insert(tk.END, output_text)
+def quick_sort(arr, compare_func=lambda x, y: x.chave <= y.chave):
+    if len(arr) <= 1:
+        return arr
+    else:
+        pivot = arr[0]
+        lesser = [x for x in arr[1:] if compare_func(x, pivot)]
+        greater = [x for x in arr[1:] if not compare_func(x, pivot)]
+        return quick_sort(lesser, compare_func) + [pivot] + quick_sort(greater, compare_func)
