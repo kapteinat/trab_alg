@@ -36,3 +36,23 @@ def quick_sort(arr, compare_func=lambda x, y: x.chave <= y.chave):
         lesser = [x for x in arr[1:] if compare_func(x, pivot)]
         greater = [x for x in arr[1:] if not compare_func(x, pivot)]
         return quick_sort(lesser, compare_func) + [pivot] + quick_sort(greater, compare_func)
+    
+
+    ###hash####
+
+class HashTable:
+    def __init__(self, size=10):
+        self.size = size
+        self.table = [None] * size
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def get_sorted_table(self):
+        sorted_table = []
+        for bucket in self.table:
+            if bucket is not None:
+                sorted_table.extend(bucket)
+        sorted_table.sort(key=lambda x: x[0])  # Ordena com base nas chaves
+        return sorted_table
+

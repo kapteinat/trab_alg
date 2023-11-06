@@ -82,7 +82,57 @@ def abrir_ordena():
 
 # Função para criar uma nova janela quando o segundo botão é pressionado
 def abrir_hash():
-    abrir_janela(2)
+    def add_to_hash():
+        name = entry_name.get()
+        key = entry_key.get()
+        
+        if name and key:
+            hash_table.insert(key, name)
+            text_output.delete(1.0, tk.END)  # Limpa o texto exibido
+            text_output.insert(tk.END, f"Elemento adicionado: Chave: {key}, Nome: {name}\n")
+        else:
+            text_output.delete(1.0, tk.END)  # Limpa o texto exibido
+            text_output.insert(tk.END, "Por favor, preencha ambos os campos.\n")
+
+    def display_table():
+        sorted_table = hash_table.get_sorted_table()
+        table_str = "Tabela Hash (Ordenada por Chave):\n"
+        for key, value in sorted_table:
+            table_str += f"Chave: {key}, Nome: {value}\n"
+        text_output.delete(1.0, tk.END)  # Limpa o texto exibido
+        text_output.insert(tk.END, table_str)
+    
+    
+    janela_hash = tk.Toplevel(janela)
+    janela_hash.title("Hash")
+    janela_hash.geometry("800x600")
+        
+    hash_table = HashTable()
+    
+    label_name = tk.Label(janela_hash, text="Nome:")
+    label_name.pack()
+    
+    entry_name = tk.Entry(janela_hash)
+    entry_name.pack()
+    
+    label_key = tk.Label(janela_hash, text="Chave:")
+    label_key.pack()
+    
+    entry_key = tk.Entry(janela_hash)
+    entry_key.pack()
+    
+    add_button = tk.Button(janela_hash, text="Adicionar à Tabela Hash", command=add_to_hash)
+    add_button.pack()
+    
+    display_button = tk.Button(janela_hash, text="Exibir Tabela", command=display_table)
+    display_button.pack()
+    
+    text_output = tk.Text(janela_hash, height=10, width=50)
+    text_output.pack()
+
+
+    
+
 
 # Função para criar uma nova janela quando o terceiro botão é pressionado
 def abrir_janela3():
